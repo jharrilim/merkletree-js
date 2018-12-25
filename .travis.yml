@@ -4,18 +4,12 @@ node_js:
 dist: trusty
 sudo: required
 cache: npm
-stages:
-  - name: deploy
-    if: branch = master
 
-jobs:
-  include:
-    - stage: test
-      name: "Node Tests"
-      script: npm run test
-    - name: "Browser Tests"
-      script: npm run test:browser
-    - stage: deploy
+if: branch = master
+
+install: npm ci
+
+script: npm run test
 
 after_success:
   - npm run typedoc
