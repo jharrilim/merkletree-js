@@ -1,0 +1,29 @@
+language: node_js
+node_js:
+  - "10"
+dist: trusty
+sudo: required
+cache: npm
+stages:
+  - name: deploy
+    if: branch = master
+
+jobs:
+  include:
+    - stage: test
+      name: "Node Tests"
+      script: npm run test
+    - name: "Browser Tests"
+      script: npm run test:browser
+    - stage: deploy
+
+after_success:
+  - npm run typedoc
+
+deploy:
+  - provider: pages
+    skip_cleanup: true
+    local_dir: docs/
+    github_token: $GITHUB_TOKEN
+    on:
+      tags: true
