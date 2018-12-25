@@ -13,6 +13,7 @@ script: npm run test
 
 after_success:
   - npm run typedoc
+  - cp jekyll/_config.yml docs/_config.yml
 
 deploy:
   - provider: pages
