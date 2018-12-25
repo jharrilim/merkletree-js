@@ -1,5 +1,6 @@
 dist
-docs
+docs/*
+!/docs/_config.yml
 node_modules
 .vscode
 .nyc_output
