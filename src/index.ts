@@ -4,7 +4,7 @@ export class MerkleTree {
     private constructor() { }
 
     /**
-     * Creates a new instance of the MerkleTree.
+     * Use this to get a new instance of a MerkleTree.
      *
      * @static
      * @returns {MerkleTree}
@@ -30,14 +30,15 @@ export class MerkleTree {
      * (the hashes that came from your data). It then builds all of the intermediate nodes of
      * the tree until it reaches the root, at which it will then return the root hash which
      * is comprised of the sum of all of the descendant node hashes.
+     * 
+     * Diagram of the Merkle Tree result:
      * ```
-     *           H(7)        where H(7) = H(5) + H(6),
-     *         /      \            H(5) = H(1) + H(2),
-     *     H(5)        H(6)        H(6) = H(3) + H(4)
-     *    /    \      /    \   
-     *  H(1)   H(2) H(3)   H(4)
+     *           H(7)           where H(x) is a hashing function
+     *         /      \         that takes any data as it's input,
+     *     H(5)        H(6)     H(5) = H(1) + H(2),
+     *    /    \      /    \    H(6) = H(3) + H(4),
+     *  H(1)   H(2) H(3)   H(4) H(7) = H(5) + H(6).
      * ```
-     * which make up the base of the Merkle Tree
      *
      * @returns {string}
      * @memberof MerkleTree
