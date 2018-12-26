@@ -1,5 +1,5 @@
 {
-  "name": "merkletree",
+  "name": "merkletree-js",
   "version": "1.0.0",
   "description": "JavaScript implementation of a Merkle Tree.",
   "scripts": {
