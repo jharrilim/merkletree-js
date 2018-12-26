@@ -11,6 +11,10 @@
   },
   "author": "Joseph Harrison-Lim",
   "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jharrilim/merkletree-js.git"
+  },
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/chai-as-promised": "^7.1.0",
