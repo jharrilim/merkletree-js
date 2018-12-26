@@ -1,5 +1,16 @@
+import { TextEncoder } from 'util';
+/**
+ * The Merkle Tree provides you with a way to audit a vector of data by comparing the hashes of each datum.
+ * It does this by building a layer using your initial hashes, and then takes a hash sum of two hashes until
+ * it reaches the last hash, effectively creating a smaller layer on top.
+ * 
+ * Note that since the Merkle Tree is a binary tree, whenever a layer has an odd amount of nodes, it must
+ * duplicate the odd node and add the hash to itself.
+ * @export
+ * @class MerkleTree
+ */
 export class MerkleTree {
-    private nodes: MerkleTreeNode[] = [];
+    private _hashes: string[] = [];
 
     private constructor() { }
 
@@ -15,6 +26,23 @@ export class MerkleTree {
     }
 
     /**
+     * Create a new instance of a MerkleTree with predefined data.
+     *
+     * @static
+     * @param {any[]} data An array of any data.
+     * @returns A Merkle Tree containing the hashes of the data that was passed in.
+     * @memberof MerkleTree
+     */
+    public static async createWith(data: any[]): Promise<MerkleTree> {
+        const tree = new MerkleTree();
+        for (const d of data) {
+            await tree.addNode(d);
+        }
+        return tree;
+    }
+
+
+    /**
      * @param {*} data Any form of data can be passed here. It will
      * be stringified, hashed, and only store the hash.
      * 
@@ -22,7 +50,7 @@ export class MerkleTree {
      * @memberof MerkleTree
      */
     public async addNode(data: any) {
-        return this.nodes.push(await MerkleTreeNode.create(data));
+        return this._hashes.push(await Hashing.hashFrom(data));
     }
 
     /**
@@ -40,24 +68,40 @@ export class MerkleTree {
      *  H(1)   H(2) H(3)   H(4) H(7) = H(5) + H(6).
      * ```
      *
-     * @returns {string}
+     * @returns {Promise<string>}
      * @memberof MerkleTree
      */
-    public audit(): string {
-        return '';
+    public async audit(): Promise<string> {
+        let hashes = this._hashes.slice();
+        while(hashes.length > 1) {
+            hashes = await MerkleTree.buildLayer(hashes);
+        }
+        return hashes[0];
     }
-}
 
-class MerkleTreeNode {
-    private constructor(private hash: string) { }
+    private static async buildLayer(hashes: string[]): Promise<string[]> {
+        const newHashes: string[] = [];
+        
+        for (let i = 0; i < hashes.length; i++) {
+            // Check to see if the last node is odd
+            if(i + 1 > hashes.length && i % 2 === 1) {
+                // Take a hash of the last node with a duplicate of itself
+                const hash = await Hashing.hashFrom(hashes[i] + hashes[i]);
+                newHashes.push(hash);
+            }
+            else if(i % 2 === 1) {
+                // From an odd node, hash it together with the previous node
+                const hash = await Hashing.hashFrom(hashes[i] + hashes[i - 1]);
+                newHashes.push(hash);
+            }
+        }
 
-    public static async create(data: any): Promise<MerkleTreeNode> {
-        return new MerkleTreeNode(await Hashing.hashFrom(data));
+        return newHashes;
     }
 }
 
 namespace Hashing {
-    const alg = 'SHA-512';
+    const alg = 'SHA512';
 
     function encodeData(data: any): Uint8Array {
         return new TextEncoder().encode(JSON.stringify(data));
@@ -69,4 +113,3 @@ namespace Hashing {
         return hash.digest().join('');
     }
 }
-
