@@ -128,6 +128,12 @@ export class MerkleTree {
     }
 }
 
+export class DataIsNullOrUndefinedError extends Error {
+    constructor(msg: string) {
+        super(msg);
+    }
+}
+
 export namespace Hashing {
     const alg = 'SHA512';
 
@@ -145,6 +151,9 @@ export namespace Hashing {
      * was passed into the function.
      */
     export async function hashFrom(data: any): Promise<string> {
+        if (data === undefined || data === null) {
+            throw new DataIsNullOrUndefinedError('Cannot hash null or undefined data.');
+        }
         const crypto = require('crypto');
         const hash = crypto.createHash(alg).update(encodeData(data));
         return hash.digest().join('');
