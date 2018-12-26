@@ -4,7 +4,7 @@
   "description": "JavaScript implementation of a Merkle Tree.",
   "scripts": {
     "build": "tsc",
-    "coverage": "nyc --reporter=html --reporter=text npm test",
+    "coverage": "nyc npm test",
     "test": "mocha",
     "typedoc": "typedoc --out docs src"
   },
@@ -40,7 +40,10 @@
       "**/*.d.ts"
     ],
     "reporter": [
-      "html"
+      "html",
+      "json",
+      "text",
+      "lcov"
     ],
     "all": true
   }
