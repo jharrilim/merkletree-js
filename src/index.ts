@@ -77,6 +77,10 @@ export class MerkleTree {
         return this._hashes.length;
     }
 
+    public async compareWith(thatTree: MerkleTree): Promise<boolean> {
+        return await this.computeRootHash() === await thatTree.computeRootHash();
+    }
+
     /**
      * Constructs a Merkle Tree based off of the hashes found in the endmost descendant nodes
      * (the hashes that came from your data). It then builds all of the intermediate nodes of
@@ -128,7 +132,7 @@ export class MerkleTree {
     }
 }
 
-export class DataIsNullOrUndefinedError extends Error {
+export class InvalidDataError extends Error {
     constructor(msg: string) {
         super(msg);
     }
@@ -151,8 +155,8 @@ export namespace Hashing {
      * was passed into the function.
      */
     export async function hashFrom(data: any): Promise<string> {
-        if (data === undefined || data === null) {
-            throw new DataIsNullOrUndefinedError('Cannot hash null or undefined data.');
+        if (data === undefined || data === null || typeof(data) === 'function') {
+            throw new InvalidDataError('Cannot hash null or undefined data.');
         }
         const crypto = require('crypto');
         const hash = crypto.createHash(alg).update(encodeData(data));

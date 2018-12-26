@@ -2,7 +2,7 @@
 import { expect, use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
-import { MerkleTree, Hashing, DataIsNullOrUndefinedError } from '../src/index';
+import { MerkleTree, Hashing, InvalidDataError } from '../src/index';
 
 use(chaiAsPromised);
 
@@ -79,6 +79,27 @@ describe('MerkleTree', () => {
         expect(hash1).to.equal(hash2);
     });
 
+    it('correctly compares the hash of two trees that contain the same data with #compareWith', async () => {
+        const data = [true, false, 1, 2, {}, 'foo'];
+        const tree1 = await MerkleTree.createWith(data);
+        const tree2 = await MerkleTree.createWith(data);
+
+        const result = await tree1.compareWith(tree2);
+
+        expect(result).to.equal(true);
+    });
+
+    it('correctly compares the hash of two trees that contain different data with #compareWith', async () => {
+        const data1 = [true, false, 1, 2, {}, 'foo'];
+        const data2 = [false, 'foo', 'bar', 1, {}, 2];
+        const tree1 = await MerkleTree.createWith(data1);
+        const tree2 = await MerkleTree.createWith(data2);
+
+        const result = await tree1.compareWith(tree2);
+
+        expect(result).to.equal(false);
+    });
+
     it('throws error when auditing a tree with no data', async () => {
         const data = [];
         const tree = await MerkleTree.createWith(data);
@@ -88,13 +109,25 @@ describe('MerkleTree', () => {
 
     it('throws an error when attempting to hash undefined data', async () => {
         const data = undefined;
-        
-        expect(Hashing.hashFrom(data)).to.be.rejectedWith(DataIsNullOrUndefinedError);
+
+        expect(Hashing.hashFrom(data)).to.be.rejectedWith(InvalidDataError);
     });
 
     it('throws an error when attempting to hash null data', async () => {
         const data = null;
-        
-        expect(Hashing.hashFrom(data)).to.be.rejectedWith(DataIsNullOrUndefinedError);
+
+        expect(Hashing.hashFrom(data)).to.be.rejectedWith(InvalidDataError);
+    });
+
+    it('throws an error when attempting to hash a function type', async () => {
+        const data = () => { return 'oops'; };
+
+        expect(Hashing.hashFrom(data)).to.be.rejectedWith(InvalidDataError);
+    });
+
+    it('throws an error when attempting to hash a class type', async () => {
+        const data = class { constructor(private oops: string) { } };
+
+        expect(Hashing.hashFrom(data)).to.be.rejectedWith(InvalidDataError);
     });
 });
