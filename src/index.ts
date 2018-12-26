@@ -112,7 +112,7 @@ export class MerkleTree {
         
         for (let i = 0; i < hashes.length; i++) {
             // Check to see if the last node is odd
-            if(i + 1 > hashes.length && i % 2 === 1) {
+            if(i + 1 === hashes.length && i % 2 === 1) {
                 // Take a hash of the last node with a duplicate of itself
                 const hash = await Hashing.hashFrom(hashes[i] + hashes[i]);
                 newHashes.push(hash);
@@ -128,7 +128,7 @@ export class MerkleTree {
     }
 }
 
-namespace Hashing {
+export namespace Hashing {
     const alg = 'SHA512';
 
     function encodeData(data: any): Uint8Array {

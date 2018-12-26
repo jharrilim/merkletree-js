@@ -2,7 +2,7 @@
 import { expect, use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
-import { MerkleTree } from '../src/index';
+import { MerkleTree, Hashing } from '../src/index';
 
 use(chaiAsPromised);
 
@@ -34,6 +34,15 @@ describe('MerkleTree', () => {
 
     it('can audit a vector with a length power to 2 (2 ^ 3) using #audit', async () => {
         const dataToAudit = [1, 2, 3, 4, 5, 6, 7, 8];
+        const tree = await MerkleTree.createWith(dataToAudit);
+        
+        const auditResult = await tree.audit();
+        
+        expect(auditResult).to.be.a('string');
+    });
+
+    it('can audit a vector with one item using #audit', async () => {
+        const dataToAudit = [1];
         const tree = await MerkleTree.createWith(dataToAudit);
         
         const auditResult = await tree.audit();

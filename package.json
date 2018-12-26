@@ -4,7 +4,9 @@
   "description": "JavaScript implementation of a Merkle Tree.",
   "scripts": {
     "build": "tsc",
-    "test": "mocha -r ts-node/register test/**/*.ts",
+    "coverage": "nyc --reporter=html --reporter=text npm test",
+    "coverage:ci": "nyc --reporter=lcov --reporter=text-lcov",
+    "test": "mocha",
     "typedoc": "typedoc --out docs src"
   },
   "author": "Joseph Harrison-Lim",
@@ -17,8 +19,26 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
+    "source-map-support": "^0.5.9",
     "ts-node": "^7.0.1",
     "typedoc": "^0.13.0",
     "typescript": "^3.2.2"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "exclude": [
+      "coverage",
+      "docs",
+      "dist",
+      "test",
+      "**/*.d.ts"
+    ],
+    "reporter": [
+      "html"
+    ],
+    "all": true
   }
 }
