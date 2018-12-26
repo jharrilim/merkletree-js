@@ -1,6 +1,6 @@
+coverage.lcov
 dist
-docs/*
-!/docs/_config.yml
+docs
 node_modules
 .vscode
 .nyc_output

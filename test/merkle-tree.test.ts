@@ -32,57 +32,57 @@ describe('MerkleTree', () => {
         expect(treeWithPredefinedData).to.be.instanceOf(MerkleTree);
     });
 
-    it('can audit a vector with a length power to 2 (2 ^ 3) using #audit', async () => {
-        const dataToAudit = [1, 2, 3, 4, 5, 6, 7, 8];
-        const tree = await MerkleTree.createWith(dataToAudit);
+    it('can compute the hash for a vector with a length power to 2 (2 ^ 3) using #computeRootHash', async () => {
+        const data = [1, 2, 3, 4, 5, 6, 7, 8];
+        const tree = await MerkleTree.createWith(data);
         
-        const auditResult = await tree.audit();
+        const rootHash = await tree.computeRootHash();
         
-        expect(auditResult).to.be.a('string');
+        expect(rootHash).to.be.a('string');
     });
 
-    it('can audit a vector with one item using #audit', async () => {
-        const dataToAudit = [1];
-        const tree = await MerkleTree.createWith(dataToAudit);
+    it('can compute the hash for a vector with one item using #computeRootHash', async () => {
+        const data = [1];
+        const tree = await MerkleTree.createWith(data);
         
-        const auditResult = await tree.audit();
+        const rootHash = await tree.computeRootHash();
         
-        expect(auditResult).to.be.a('string');
+        expect(rootHash).to.be.a('string');
     });
 
-    it('can audit a vector with a length that is odd using #audit', async () => {
-        const dataToAudit = [1, 2, 3, 4, 5, 6, 7];
-        const tree = await MerkleTree.createWith(dataToAudit);
+    it('can compute the hash for a vector with a length that is odd using #computeRootHash', async () => {
+        const data = [1, 2, 3, 4, 5, 6, 7];
+        const tree = await MerkleTree.createWith(data);
         
-        const auditResult = await tree.audit();
+        const rootHash = await tree.computeRootHash();
         
-        expect(auditResult).to.be.a('string');
+        expect(rootHash).to.be.a('string');
     });
 
-    it('can audit a vector with multiple data types using #audit', async () => {
-        const dataToAudit = [1, true, 'foo', { bar: 'baz' }, MerkleTree.create()];
-        const tree = await MerkleTree.createWith(dataToAudit);
+    it('can compute the hash for a vector with multiple data types using #computeRootHash', async () => {
+        const data = [1, true, 'foo', { bar: 'baz' }, MerkleTree.create()];
+        const tree = await MerkleTree.createWith(data);
         
-        const auditResult = await tree.audit();
+        const rootHash = await tree.computeRootHash();
         
-        expect(auditResult).to.be.a('string');
+        expect(rootHash).to.be.a('string');
     });
 
     it('can create equal hashes based off of the same data for multiple trees', async () => {
-        const dataToAudit = [1, 2, 3, 4, 5, 6, 7];
-        const tree1 = await MerkleTree.createWith(dataToAudit);
-        const tree2 = await MerkleTree.createWith(dataToAudit);
+        const data = [1, 2, 3, 4, 5, 6, 7];
+        const tree1 = await MerkleTree.createWith(data);
+        const tree2 = await MerkleTree.createWith(data);
         
-        const hash1 = await tree1.audit();
-        const hash2 = await tree2.audit();
+        const hash1 = await tree1.computeRootHash();
+        const hash2 = await tree2.computeRootHash();
 
         expect(hash1).to.equal(hash2);
     });
 
     it('throws error when auditing a tree with no data', async () => {
-        const dataToAudit = [];
-        const tree = await MerkleTree.createWith(dataToAudit);
+        const data = [];
+        const tree = await MerkleTree.createWith(data);
         
-        expect(tree.audit()).to.be.rejectedWith(Error);
+        expect(tree.computeRootHash()).to.be.rejectedWith(Error);
     });
 });

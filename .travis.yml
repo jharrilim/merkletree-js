@@ -21,7 +21,7 @@ jobs:
     - stage: "Node.js 11"
       node_js: "11"
       script:
-        - npm run coverage && codecov
+        - npm run coverage:ci && codecov
       after_success:
         - npm run typedoc
         - cp jekyll/_config.yml docs/_config.yml
@@ -30,5 +30,3 @@ jobs:
           skip_cleanup: true
           local_dir: docs/
           github_token: $GITHUB_TOKEN
-          on:
-            node: "11"
