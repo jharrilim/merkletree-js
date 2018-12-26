@@ -1,4 +1,5 @@
 import { TextEncoder } from 'util';
+
 /**
  * The Merkle Tree provides you with a way to audit a vector of data by comparing the hashes of each datum.
  * It does this by building a layer using your initial hashes, and then takes a hash sum of two hashes until
@@ -11,6 +12,17 @@ import { TextEncoder } from 'util';
  */
 export class MerkleTree {
     private _hashes: string[] = [];
+
+    /**
+     * The count of each node in the base of the tree.
+     *
+     * @readonly
+     * @type {number}
+     * @memberof MerkleTree
+     */
+    public get length(): number {
+        return this._hashes.length;
+    }
 
     private constructor() { }
 
@@ -35,12 +47,9 @@ export class MerkleTree {
      */
     public static async createWith(data: any[]): Promise<MerkleTree> {
         const tree = new MerkleTree();
-        for (const d of data) {
-            await tree.addNode(d);
-        }
+        await tree.addNodes(data);
         return tree;
     }
-
 
     /**
      * @param {*} data Any form of data can be passed here. It will
@@ -49,8 +58,23 @@ export class MerkleTree {
      * @returns {Promise<number>} A promise containing the new length of the base of the Merkle Tree.
      * @memberof MerkleTree
      */
-    public async addNode(data: any) {
+    public async addNode(data: any): Promise<number> {
         return this._hashes.push(await Hashing.hashFrom(data));
+    }
+
+    /**
+     * Adds an array of data to the hash nodes.
+     *
+     * @see #addNode
+     * @param {any[]} data An array of any data.
+     * @returns {Promise<number>} A promise containing the new length of the base of the Merkle Tree.
+     * @memberof MerkleTree
+     */
+    public async addNodes(data: any[]): Promise<number> {
+        for (const d of data) {
+            await this.addNode(d);
+        }
+        return this._hashes.length;
     }
 
     /**
@@ -72,6 +96,10 @@ export class MerkleTree {
      * @memberof MerkleTree
      */
     public async audit(): Promise<string> {
+        if (this._hashes.length < 1) {
+            throw Error('There is no data in the Merkle Tree. Use #addNode or #addNodes.');
+        }
+
         let hashes = this._hashes.slice();
         while(hashes.length > 1) {
             hashes = await MerkleTree.buildLayer(hashes);
@@ -107,6 +135,15 @@ namespace Hashing {
         return new TextEncoder().encode(JSON.stringify(data));
     }
 
+    /**
+     * Returns a SHA-512 hash from any given data. Used internally for the
+     * Merkle Tree.
+     *
+     * @export
+     * @param {*} data Any data.
+     * @returns {Promise<string>} A promise containing the hash of the data that
+     * was passed into the function.
+     */
     export async function hashFrom(data: any): Promise<string> {
         const crypto = require('crypto');
         const hash = crypto.createHash(alg).update(encodeData(data));
