@@ -10,8 +10,8 @@ cache: npm
 
 if: branch = master
 
-install: 
-  - npm ci
+install:
+  - npm install
   - npm install -g codecov
 
 script:
