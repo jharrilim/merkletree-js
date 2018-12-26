@@ -5,7 +5,6 @@
   "scripts": {
     "build": "tsc",
     "coverage": "nyc --reporter=html --reporter=text npm test",
-    "coverage:ci": "mkdir coverage && nyc report --reporter=json > coverage/coverage.json",
     "test": "mocha",
     "typedoc": "typedoc --out docs src"
   },

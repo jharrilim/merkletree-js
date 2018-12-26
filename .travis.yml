@@ -1,10 +1,10 @@
 if: branch = master
 
 language: node_js
-node_js:
-  - "8"
-  - "9"
-  - "10"
+
+notifications:
+  email: false
+
 dist: trusty
 sudo: required
 cache: npm
@@ -13,15 +13,25 @@ install:
   - npm install
   - npm install -g codecov
 
-script:
-  - npm run coverage
-
 jobs:
   include:
-    - stage: "Node.js 11"
+    - stage: "Test"
+      name: "Node 8"
+      node_js: "8"
+      script: npm run coverage
+
+    - name: "Node 9"
+      node_js: "9"
+      script: npm run coverage
+
+    - name: "Node 10"
+      node_js: "10"
+      script: npm run coverage
+
+    - name: "Node 11"
       node_js: "11"
       script:
-        - npm run coverage:ci && codecov
+        - npm run coverage && codecov
       after_success:
         - npm run typedoc
         - cp jekyll/_config.yml docs/_config.yml
