@@ -1,5 +1,3 @@
-if: branch = master
-
 language: node_js
 
 notifications:
@@ -40,3 +38,10 @@ jobs:
           skip_cleanup: true
           local_dir: docs/
           github_token: $GITHUB_TOKEN
+          on:
+            branch: master
+        - provider: npm
+          email: $EMAIL
+          api_key: $NPM_API_KEY
+          on:
+            branch: release
