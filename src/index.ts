@@ -97,7 +97,7 @@ export class MerkleTree {
      */
     public async audit(): Promise<string> {
         if (this._hashes.length < 1) {
-            throw Error('There is no data in the Merkle Tree. Use #addNode or #addNodes.');
+            throw new Error('There is no data in the Merkle Tree. Use #addNode or #addNodes.');
         }
 
         let hashes = this._hashes.slice();

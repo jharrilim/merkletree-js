@@ -1,6 +1,11 @@
 /** global describe it */
-import { expect } from 'chai';
+import { expect, use } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+
 import { MerkleTree } from '../src/index';
+
+use(chaiAsPromised);
+
 describe('MerkleTree', () => {
     it('returns a MerkleTree from MerkleTree.create', () => {
         const tree = MerkleTree.create();
@@ -63,5 +68,12 @@ describe('MerkleTree', () => {
         const hash2 = await tree2.audit();
 
         expect(hash1).to.equal(hash2);
+    });
+
+    it('throws error when auditing a tree with no data', async () => {
+        const dataToAudit = [];
+        const tree = await MerkleTree.createWith(dataToAudit);
+        
+        expect(tree.audit()).to.be.rejectedWith(Error);
     });
 });
