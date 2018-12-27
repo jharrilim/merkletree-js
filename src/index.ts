@@ -121,6 +121,9 @@ export class MerkleTree {
      * the tree until it reaches the root, at which it will then return the root hash which
      * is comprised of the sum of all of the descendant node hashes.
      * 
+     * > Note: This will return the previous hash which is cached in the tree as long as
+     * > nothing has been added to the tree since the last time #computeRootHash was called.
+     *
      * Diagram of the Merkle Tree result:
      * ```
      *           H(7)           where H(x) is a hashing function
