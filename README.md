@@ -1,19 +1,14 @@
 # merkletree-js
 
-Merkle Tree for Javascript/Typescript on Node. Currently, browser is not supported.
+Merkle Tree for Javascript/Typescript on Node. Currently, browser is not supported. [API documentation can be found here.](https://jharrilim.github.io/merkletree-js/)
 
-| Build | Status |
-| --- | --- |
-| Overall | [![Build Status]](https://travis-ci.org/jharrilim/merkletree-js) |
-| Node 8 | [![Node 8]](https://travis-ci.org/jharrilim/merkletree-js) |
-| Node 9 | [![Node 9]](https://travis-ci.org/jharrilim/merkletree-js) |
+| Build | Status | Coverage | Score |
+| --: | :-- | --: | :-- |
+| Overall | [![Build Status]](https://travis-ci.org/jharrilim/merkletree-js) | Codacy | [![Codacy Badge]](https://www.codacy.com/app/jharri50/merkletree-js?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jharrilim/merkletree-js&amp;utm_campaign=Badge_Grade) |
+| Node 8 | [![Node 8]](https://travis-ci.org/jharrilim/merkletree-js) | Coveralls | [![Coveralls]](https://coveralls.io/github/jharrilim/merkletree-js?branch=master) |
+| Node 9 | [![Node 9]](https://travis-ci.org/jharrilim/merkletree-js) |  Codecov | [![Codecov]](https://codecov.io/gh/jharrilim/merkletree-js) |
 | Node 10 | [![Node 10]](https://travis-ci.org/jharrilim/merkletree-js) |
 | Node 11 | [![Node 11]](https://travis-ci.org/jharrilim/merkletree-js) |
-
-| Coverage | Score |
-| --- | --- |
-| Codacy | [![Codacy Badge]](https://www.codacy.com/app/jharri50/merkletree-js?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jharrilim/merkletree-js&amp;utm_campaign=Badge_Grade) |
-| Codecov | [![Codecov]](https://codecov.io/gh/jharrilim/merkletree-js) |
 
 ## Table of Contents
 - [merkletree-js](#merkletree-js)
@@ -29,7 +24,7 @@ Merkle Tree for Javascript/Typescript on Node. Currently, browser is not support
 ## Install via NPM
 
 ```sh
-$ npm i @jharrilim/merkletree-js
+npm i @jharrilim/merkletree-js
 ```
 
 ## Usage
@@ -117,6 +112,7 @@ async function compareAndSave(firstTree, secondTree) {  // This is not price mat
 [Build Status]: https://travis-ci.org/jharrilim/merkletree-js.svg?branch=master
 [Codecov]: https://codecov.io/gh/jharrilim/merkletree-js/branch/master/graph/badge.svg
 [Codacy Badge]: https://api.codacy.com/project/badge/Grade/56df89b36bfe4c6396e105184aceb66a
+[Coveralls]: https://coveralls.io/repos/github/jharrilim/merkletree-js/badge.svg?branch=master
 [Node 8]: https://travis-matrix-badges.herokuapp.com/repos/jharrilim/merkletree-js/branches/master/1
 [Node 9]: https://travis-matrix-badges.herokuapp.com/repos/jharrilim/merkletree-js/branches/master/2
 [Node 10]: https://travis-matrix-badges.herokuapp.com/repos/jharrilim/merkletree-js/branches/master/3

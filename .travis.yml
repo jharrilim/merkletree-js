@@ -9,7 +9,7 @@ cache: npm
 
 install:
   - npm install
-  - npm install -g codecov
+  - npm install -g codecov coveralls
 
 
 jobs:
@@ -30,7 +30,7 @@ jobs:
     - name: "Node 11"
       node_js: "11"
       script:
-        - npm run coverage && codecov
+        - npm run coverage && codecov && coveralls
       after_success:
         - npm run typedoc
         - cp jekyll/_config.yml docs/_config.yml
