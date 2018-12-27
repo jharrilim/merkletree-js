@@ -12,6 +12,9 @@ import { TextEncoder } from 'util';
  */
 export class MerkleTree {
     private _hashes: string[] = [];
+    private _isDirty: boolean = true;
+    private _rootHash: string = '';
+
 
     /**
      * The count of each node in the base of the tree.
@@ -22,6 +25,17 @@ export class MerkleTree {
      */
     public get length(): number {
         return this._hashes.length;
+    }
+
+    /**
+     * Use this to check if a node has been added to the tree
+     * between now and the last time #computeRootHash was called.
+     * @readonly
+     * @type {boolean}
+     * @memberof MerkleTree
+     */
+    public get isDirty(): boolean {
+        return this._isDirty;
     }
 
     private constructor() { }
@@ -59,7 +73,8 @@ export class MerkleTree {
      * @memberof MerkleTree
      */
     public async addNode(data: any): Promise<number> {
-        return this._hashes.push(await Hashing.hashFrom(data));
+        this._isDirty = true;
+        return await this._addNode(data);
     }
 
     /**
@@ -71,8 +86,9 @@ export class MerkleTree {
      * @memberof MerkleTree
      */
     public async addNodes(data: any[]): Promise<number> {
+        this._isDirty = true;
         for (const d of data) {
-            await this.addNode(d);
+            await this._addNode(d);
         }
         return this._hashes.length;
     }
@@ -118,6 +134,10 @@ export class MerkleTree {
      * @memberof MerkleTree
      */
     public async computeRootHash(): Promise<string> {
+        if (!this._isDirty) {
+            return this._rootHash;
+        }
+
         if (this._hashes.length < 1) {
             throw new Error('There is no data in the Merkle Tree. Use #addNode or #addNodes.');
         }
@@ -130,7 +150,12 @@ export class MerkleTree {
         while (hashes.length > 1) {
             hashes = await MerkleTree.buildLayer(hashes);
         }
-        return hashes[0];
+        this._isDirty = false;
+        return this._rootHash = hashes[0];
+    }
+
+    private async _addNode(data: any): Promise<number> {
+        return this._hashes.push(await Hashing.hashFrom(data));
     }
 
     /**

@@ -20,7 +20,7 @@ describe('MerkleTree', () => {
 
         await tree.addNodes(data);
 
-        expect(tree.length).to.be.gt(0);
+        expect(tree.length).to.equal(data.length);
     });
 
     it('can create a MerkleTree with predefined elements using MerkleTree.createWith', async () => {
@@ -79,6 +79,16 @@ describe('MerkleTree', () => {
         expect(hash1).to.equal(hash2);
     });
 
+    it('correctly reproduces the same hash from the same tree when #computeRootHash is called twice', async () => {
+        const data = [true, false, ![]];
+
+        const tree = await MerkleTree.createWith(data);
+        const hash1 = await tree.computeRootHash();
+        const hash2 = await tree.computeRootHash();
+    
+        expect(hash1).to.equal(hash2);
+    });
+
     it('correctly compares the hash of two trees that contain the same data with #compareWith', async () => {
         const data = [true, false, 1, 2, {}, 'foo'];
         const tree1 = await MerkleTree.createWith(data);
@@ -98,6 +108,56 @@ describe('MerkleTree', () => {
         const result = await tree1.compareWith(tree2);
 
         expect(result).to.equal(false);
+    });
+
+    it('is dirty after calling #createWith', async () => {
+        const data = [1, 2, 3];
+        
+        const tree = await MerkleTree.createWith(data);
+        
+        expect(tree.isDirty).to.equal(true);
+    });
+
+    it('is dirty after calling #addNode', async () => {
+        const tree = MerkleTree.create();
+
+        tree.addNode('newnode');
+
+        expect(tree.isDirty).to.equal(true);
+    });
+
+    it('is dirty after calling #addNodes', async () => {
+        const data = [1, 2, 3];
+        const tree = MerkleTree.create();
+
+        await tree.addNodes(data);
+
+        expect(tree.isDirty).to.equal(true);
+    })
+
+    it('is dirty after creating a tree with MerkleTree.create', async () => {
+        const tree = MerkleTree.create();
+
+        expect(tree.isDirty).to.equal(true);
+    });
+
+    it('is not dirty after calling #computeRootHash with valid data', async () => {
+        const data = [1, 2, 3];
+        const tree = await MerkleTree.createWith(data);
+        
+        await tree.computeRootHash();
+
+        expect(tree.isDirty).to.equal(false);
+    });
+
+    it('is dirty after adding ndoes, computing root hash, and then adding a node', async () => {
+        const data = [1, 2, 3];
+        const tree = await MerkleTree.createWith(data);
+
+        await tree.computeRootHash();
+        await tree.addNode(4);
+
+        expect(tree.isDirty).to.equal(true);
     });
 
     it('throws error when auditing a tree with no data', async () => {
