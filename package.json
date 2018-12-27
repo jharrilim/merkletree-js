@@ -49,5 +49,8 @@
       "lcov"
     ],
     "all": true
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
