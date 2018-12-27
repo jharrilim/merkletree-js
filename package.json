@@ -1,6 +1,6 @@
 {
   "name": "@jharrilim/merkletree-js",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "JavaScript implementation of a Merkle Tree.",
   "scripts": {
     "build": "tsc",
@@ -39,7 +39,8 @@
     "typescript": "^3.2.2"
   },
   "files": [
-    "dist/**/*"
+    "./index.js",
+    "./index.js.map"
   ],
   "nyc": {
     "extension": [
