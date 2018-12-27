@@ -77,6 +77,24 @@ export class MerkleTree {
         return this._hashes.length;
     }
 
+    /**
+     * Use this to compare the root hash of this tree with another tree.
+     * 
+     * 
+     * @example
+     * ```js
+     * async function foo() {
+     *     const data = [1, 2, 3];
+     *     const tree1 = await MerkleTree.createWith(data);
+     *     const tree2 = await MerkleTree.createWith(data);
+     *     return await tree1.compareWith(tree2);
+     * }
+     * ```
+     * 
+     * @param {MerkleTree} thatTree
+     * @returns {Promise<boolean>}
+     * @memberof MerkleTree
+     */
     public async compareWith(thatTree: MerkleTree): Promise<boolean> {
         return await this.computeRootHash() === await thatTree.computeRootHash();
     }
@@ -103,44 +121,68 @@ export class MerkleTree {
         if (this._hashes.length < 1) {
             throw new Error('There is no data in the Merkle Tree. Use #addNode or #addNodes.');
         }
+        // If last node is odd, copy last node and push it to make it even
+        if (this._hashes.length % 2 === 1) {
+            this._hashes.push(this._hashes[this._hashes.length - 1]);
+        }
 
         let hashes = this._hashes.slice();
-        while(hashes.length > 1) {
+        while (hashes.length > 1) {
             hashes = await MerkleTree.buildLayer(hashes);
         }
         return hashes[0];
     }
 
+    /**
+     * Used internally to convert a layer of hashes in a Merkle Tree to the next smaller layer.
+     * This is where the most of the Merkle Tree algorithm resides.
+     * @private
+     * @static
+     * @param {string[]} hashes
+     * @returns {Promise<string[]>}
+     * @memberof MerkleTree
+     */
     private static async buildLayer(hashes: string[]): Promise<string[]> {
         const newHashes: string[] = [];
-        
-        for (let i = 0; i < hashes.length; i++) {
-            // Check to see if the last node is odd
-            if(i + 1 === hashes.length && i % 2 === 1) {
-                // Take a hash of the last node with a duplicate of itself
-                const hash = await Hashing.hashFrom(hashes[i] + hashes[i]);
-                newHashes.push(hash);
-            }
-            else if(i % 2 === 1) {
-                // From an odd node, hash it together with the previous node
-                const hash = await Hashing.hashFrom(hashes[i] + hashes[i - 1]);
-                newHashes.push(hash);
-            }
+
+        for (let i = 0; i < hashes.length; i += 2) {
+            // From an odd node, hash it together with the previous node
+            const hash = await Hashing.hashFrom(hashes[i] + hashes[i + 1]);
+            newHashes.push(hash);
         }
 
         return newHashes;
     }
 }
 
+/**
+ * This error gets thrown when trying to hash one of the following:
+ * - undefined
+ * - null
+ * - function (includes class)
+ *
+ * @export
+ * @class InvalidDataError
+ * @extends {Error}
+ */
 export class InvalidDataError extends Error {
     constructor(msg: string) {
         super(msg);
     }
 }
 
+/**
+ * This namespace is used to hold functions related to hashing.
+ */
 export namespace Hashing {
     const alg = 'SHA512';
 
+    /**
+     * Encodes data by JSON stringifying it and then using the TextEncoder to encode it.
+     *
+     * @param {*} data
+     * @returns {Uint8Array}
+     */
     function encodeData(data: any): Uint8Array {
         return new TextEncoder().encode(JSON.stringify(data));
     }
@@ -155,7 +197,7 @@ export namespace Hashing {
      * was passed into the function.
      */
     export async function hashFrom(data: any): Promise<string> {
-        if (data === undefined || data === null || typeof(data) === 'function') {
+        if (data === undefined || data === null || typeof (data) === 'function') {
             throw new InvalidDataError('Cannot hash null or undefined data.');
         }
         const crypto = require('crypto');
