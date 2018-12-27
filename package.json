@@ -1,6 +1,6 @@
 {
   "name": "@jharrilim/merkletree-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript implementation of a Merkle Tree.",
   "scripts": {
     "build": "tsc",
