@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc",
     "coverage": "nyc npm test",
+    "report": "nyc report --reporter=text-lcov",
     "test": "mocha",
     "typedoc": "typedoc --out docs src"
   },
