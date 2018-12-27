@@ -100,7 +100,7 @@ describe('MerkleTree', () => {
     });
 
     it('correctly compares the hash of two trees that contain different data with #compareWith', async () => {
-        const data1 = [true, false, 1, 2, {}, 'foo'];
+        const data1 = [true, false, 1, -2, {}, 'foo', 0.000000293];
         const data2 = [false, 'foo', 'bar', 1, {}, 2];
         const tree1 = await MerkleTree.createWith(data1);
         const tree2 = await MerkleTree.createWith(data2);
@@ -164,7 +164,7 @@ describe('MerkleTree', () => {
         const data = [];
         const tree = await MerkleTree.createWith(data);
 
-        expect(tree.computeRootHash()).to.be.rejectedWith(Error);
+        expect(tree.computeRootHash()).to.be.rejectedWith(InvalidDataError);
     });
 
     it('throws an error when attempting to hash undefined data', async () => {

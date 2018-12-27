@@ -11,8 +11,37 @@ import { TextEncoder } from 'util';
  * @class MerkleTree
  */
 export class MerkleTree {
+    /**
+     * Internally stores the hashes of all of the data that was passed in.
+     *
+     * @see {MerkleTree#addNode}
+     * @see {MerkleTree#addNodes}
+     * @private
+     * @type {string[]}
+     * @memberof MerkleTree
+     */
     private _hashes: string[] = [];
+
+    /**
+     * Internally stores the state of whether something has been added to the
+     * tree since the last time it was updated or not.
+     *
+     * @see {MerkleTree#isDirty}
+     * @private
+     * @type {boolean}
+     * @memberof MerkleTree
+     */
     private _isDirty: boolean = true;
+
+    /**
+     * Internally stores the root hash. Should only be accessible through
+     * #computeRootHash.
+     * 
+     * @see {MerkleTree#computeRootHash}
+     * @private
+     * @type {string}
+     * @memberof MerkleTree
+     */
     private _rootHash: string = '';
 
 
@@ -80,7 +109,7 @@ export class MerkleTree {
     /**
      * Adds an array of data to the hash nodes.
      *
-     * @see #addNode
+     * @see {MerkleTree#addNode}
      * @param {any[]} data An array of any data.
      * @returns {Promise<number>} A promise containing the new length of the base of the Merkle Tree.
      * @memberof MerkleTree
@@ -96,8 +125,8 @@ export class MerkleTree {
     /**
      * Use this to compare the root hash of this tree with another tree.
      * 
-     * 
      * @example
+     * 
      * ```js
      * async function foo() {
      *     const data = [1, 2, 3];
@@ -142,7 +171,7 @@ export class MerkleTree {
         }
 
         if (this._hashes.length < 1) {
-            throw new Error('There is no data in the Merkle Tree. Use #addNode or #addNodes.');
+            throw new InvalidDataError('There is no data in the Merkle Tree. Use #addNode or #addNodes.');
         }
         // If last node is odd, copy last node and push it to make it even
         if (this._hashes.length % 2 === 1) {
