@@ -11,6 +11,7 @@ install:
   - npm install
   - npm install -g codecov
 
+
 jobs:
   include:
     - stage: "Test"
@@ -29,6 +30,7 @@ jobs:
     - name: "Node 11"
       node_js: "11"
       script:
+        - npm run build
         - npm run coverage && codecov
       after_success:
         - npm run typedoc
