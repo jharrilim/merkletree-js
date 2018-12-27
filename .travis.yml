@@ -30,12 +30,11 @@ jobs:
     - name: "Node 11"
       node_js: "11"
       script:
-        - npm run build
         - npm run coverage && codecov
       after_success:
         - npm run typedoc
         - cp jekyll/_config.yml docs/_config.yml
-        - mv dist/* .
+        - npm run build && mv dist/* .
       deploy:
         - provider: pages
           skip_cleanup: true
