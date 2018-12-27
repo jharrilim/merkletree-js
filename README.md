@@ -1,6 +1,11 @@
 # merkletree-js 
-![NPM Version](https://img.shields.io/npm/v/@jharrilim/merkletree-js.svg) ![Issues](https://img.shields.io/github/issues/jharrilim/merkletree-js.svg) ![Pull Requests](https://img.shields.io/github/issues-pr/jharrilim/merkletree-js.svg) ![License](https://img.shields.io/github/license/jharrilim/merkletree-js.svg) [![Gitter](https://img.shields.io/gitter/room/jharrilim/merkletree-js.svg)](https://gitter.im/merkletree-js/community)
-
+[![NPM Version]](https://www.npmjs.com/package/@jharrilim/merkletree-js)
+[![Issues]](https://github.com/jharrilim/merkletree-js/issues)
+[![Pull Requests]](https://github.com/jharrilim/merkletree-js/pulls)
+[![License]](https://github.com/jharrilim/merkletree-js/blob/master/LICENSE)
+[![Gitter]](https://gitter.im/merkletree-js/community)
+[![Dev Dependencies]](https://github.com/jharrilim/merkletree-js/network/dependencies)
+[![Code Size]](https://github.com/jharrilim/merkletree-js/pulse)
 
 
 
@@ -116,10 +121,17 @@ async function compareAndSave(firstTree, secondTree) {  // This is not price mat
 [Build Status]: https://travis-ci.org/jharrilim/merkletree-js.svg?branch=master
 [Codecov]: https://codecov.io/gh/jharrilim/merkletree-js/branch/master/graph/badge.svg
 [Codacy Badge]: https://api.codacy.com/project/badge/Grade/56df89b36bfe4c6396e105184aceb66a
+[Code Size]: https://img.shields.io/github/languages/code-size/jharrilim/merkletree-js.svg
 [Coveralls]: https://coveralls.io/repos/github/jharrilim/merkletree-js/badge.svg?branch=master
+[Dev Dependencies]: https://img.shields.io/david/dev/jharrilim/merkletree-js.svg
 [Github Releases]: https://img.shields.io/github/downloads/jharrilim/merkletree-js/total.svg
+[Gitter]: https://img.shields.io/gitter/room/jharrilim/merkletree-js.svg
+[Issues]: https://img.shields.io/github/issues/jharrilim/merkletree-js.svg
+[License]: https://img.shields.io/github/license/jharrilim/merkletree-js.svg
 [NPM Downloads]: https://img.shields.io/npm/dt/@jharrilim/merkletree-js.svg
 [Node 8]: https://travis-matrix-badges.herokuapp.com/repos/jharrilim/merkletree-js/branches/master/1
 [Node 9]: https://travis-matrix-badges.herokuapp.com/repos/jharrilim/merkletree-js/branches/master/2
 [Node 10]: https://travis-matrix-badges.herokuapp.com/repos/jharrilim/merkletree-js/branches/master/3
 [Node 11]: https://travis-matrix-badges.herokuapp.com/repos/jharrilim/merkletree-js/branches/master/4
+[NPM Version]: https://img.shields.io/npm/v/@jharrilim/merkletree-js.svg
+[Pull Requests]: https://img.shields.io/github/issues-pr/jharrilim/merkletree-js.svg
